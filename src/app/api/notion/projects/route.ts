@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
+import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
 const notionSecret = process.env.NOTION_SECRET;
 const notionDatabaseId = process.env.NOTION_PROJECTS_DATABASE_ID;
@@ -28,10 +29,10 @@ export async function GET() {
     coverImageUrl: string;
   };
   const filteredResponse: Project[] = response.results.map((page) => ({
-    title: page.properties.title.title[0].text.content,
-    description: page.properties.description.rich_text[0].text.content,
-    link: page.properties.link.url,
-    coverImageUrl: page.properties.cover_image.files[0]?.file.url,
+    title: (page as PageObjectResponse).properties.title?.title[0]?.text.content || "",
+    description: (page as PageObjectResponse).properties.description.rich_text[0].text.content,
+    link: (page as PageObjectResponse).properties.link.url,
+    coverImageUrl: (page as PageObjectResponse).properties.cover_image.files[0]?.file.url,
   }));
 
   // return NextResponse.json({ message: "success", data: response.results });
