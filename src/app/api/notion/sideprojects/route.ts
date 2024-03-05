@@ -29,9 +29,13 @@ export async function GET() {
     coverImageUrl: string;
   };
   const filteredResponse: Project[] = response.results.map((page) => ({
+    // @ts-ignore
     title: (page as PageObjectResponse).properties.title.title[0].text.content,
+    // @ts-ignore
     description: (page as PageObjectResponse).properties.description.rich_text[0].text.content,
+    // @ts-ignore
     link: (page as PageObjectResponse).properties.link.url,
+    // @ts-ignore
     coverImageUrl: (page as PageObjectResponse).properties.cover_image.files[0]?.file.url,
   }));
 
