@@ -1,18 +1,18 @@
-"use client";
-import React, { useEffect, useState } from "react";
 import { FaComputer } from "react-icons/fa6";
 import ProjectsCard from "./ProjectsCard";
 
-const Projects: any = () => {
-  const [projects, setProjects] = useState([]);
-  useEffect(() => {
-    const fetchNotion = async () => {
-      const response = await fetch("/api/notion/projects");
-      const data = await response.json();
-      setProjects(data);
-    };
-    fetchNotion();
-  }, []);
+async function fetchProjects() {
+  const API_URL = process.env.API_URL;
+  const res = await fetch(`${API_URL}/api/notion/projects`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+export default async function Projects(): Promise<any> {
+  const projects = await fetchProjects();
   return (
     <>
       <div className="bg-base-100">
@@ -43,6 +43,4 @@ const Projects: any = () => {
       )}
     </>
   );
-};
-
-export default Projects;
+}

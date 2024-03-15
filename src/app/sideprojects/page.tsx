@@ -1,18 +1,18 @@
-"use client";
-import React, { useEffect, useState } from "react";
 import { FaComputer } from "react-icons/fa6";
 import ProjectsCard from "@/components/Projects/ProjectsCard";
 
-const SideProjects = () => {
-  const [projects, setProjects] = useState([]);
-  useEffect(() => {
-    const fetchNotion = async () => {
-      const response = await fetch("/api/notion/sideprojects");
-      const data = await response.json();
-      setProjects(data);
-    };
-    fetchNotion();
-  }, []);
+async function fetchProjects() {
+  const API_URL = process.env.API_URL;
+  const res = await fetch(`${API_URL}/api/notion/sideprojects`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+export default async function SideProjects(): Promise<any> {
+  const projects = await fetchProjects();
   return (
     <>
       <div
@@ -40,18 +40,26 @@ const SideProjects = () => {
           Side Projects :-
         </h1>
       </div>
-      {projects.map((project, index) => (
-        <ProjectsCard
-          key={index}
-          title={project.title}
-          link={project.link}
-          description={project.description}
-          imageUrl={project.coverImageUrl}
-          isEven={index % 2 === 0}
-        />
-      ))}
+      {projects.map(
+        (
+          project: {
+            title: string;
+            link: string;
+            description: string;
+            coverImageUrl: string;
+          },
+          index: number
+        ) => (
+          <ProjectsCard
+            key={index}
+            title={project.title}
+            link={project.link}
+            description={project.description}
+            imageUrl={project.coverImageUrl}
+            isEven={index % 2 === 0}
+          />
+        )
+      )}
     </>
   );
-};
-
-export default SideProjects;
+}
