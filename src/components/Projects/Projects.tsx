@@ -1,50 +1,18 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import { FaComputer } from "react-icons/fa6";
 import ProjectsCard from "./ProjectsCard";
-import { Client } from "@notionhq/client";
-import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
-const notionSecret = process.env.NOTION_SECRET;
-const notionDatabaseId = process.env.NOTION_PROJECTS_DATABASE_ID;
-
-const notion = new Client({ auth: notionSecret });
-
-async function fetchProjects() {
-  if (!notionSecret || !notionDatabaseId) {
-    throw new Error("Notion secret or database id not provided");
-  }
-
-  const response = await notion.databases.query({
-    database_id: notionDatabaseId,
-    sorts: [
-      {
-        property: "index",
-        direction: "ascending",
-      },
-    ],
-  });
-
-  type Project = {
-    title: string;
-    description: string;
-    link: string;
-    coverImageUrl: string;
-  };
-  const filteredResponse: Project[] = response.results.map((page) => ({
-    title:
-      (page as PageObjectResponse).properties.title?.title[0]?.text.content ||
-      "",
-    description: (page as PageObjectResponse).properties.description
-      .rich_text[0].text.content,
-    link: (page as PageObjectResponse).properties.link.url,
-    coverImageUrl: (page as PageObjectResponse).properties.cover_image.files[0]
-      ?.file.url,
-  }));
-
-  return filteredResponse;
-}
-
-export default async function Projects(): Promise<any> {
-  const projects = await fetchProjects();
+const Projects: any = () => {
+  const [projects, setProjects] = useState([]);
+  useEffect(() => {
+    const fetchNotion = async () => {
+      const response = await fetch("/api/notion/projects");
+      const data = await response.json();
+      setProjects(data);
+    };
+    fetchNotion();
+  }, []);
   return (
     <>
       <div className="bg-base-100">
@@ -75,4 +43,6 @@ export default async function Projects(): Promise<any> {
       )}
     </>
   );
-}
+};
+
+export default Projects;
