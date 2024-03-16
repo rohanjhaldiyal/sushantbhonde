@@ -7,8 +7,8 @@ const SideProjects = () => {
   const [projects, setProjects] = useState([]);
   useEffect(() => {
     const fetchNotion = async () => {
-      const response = await fetch("/api/notion/sideprojects");
-      const data = await response.json();
+      const response = await axios.get("/api/notion/projects");
+      const data = await response.data();
       setProjects(data);
     };
     fetchNotion();

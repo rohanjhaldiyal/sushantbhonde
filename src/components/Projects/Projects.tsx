@@ -2,13 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { FaComputer } from "react-icons/fa6";
 import ProjectsCard from "./ProjectsCard";
+import axios from "axios";
+
 
 const Projects: any = () => {
   const [projects, setProjects] = useState([]);
   useEffect(() => {
     const fetchNotion = async () => {
-      const response = await fetch("/api/notion/projects");
-      const data = await response.json();
+      const response = await axios.get("/api/notion/projects");
+      const data = await response.data();
+      console.log(data);
+      
       setProjects(data);
     };
     fetchNotion();
