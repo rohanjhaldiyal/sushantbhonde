@@ -10,7 +10,7 @@ const Projects: any = () => {
   useEffect(() => {
     const fetchNotion = async () => {
       const response = await axios.get("/api/notion/projects");
-      const data = await response.data();
+      const data = await response.data;
       console.log(data);
       
       setProjects(data);
