@@ -41,16 +41,26 @@ const SideProjects = () => {
           Side Projects :-
         </h1>
       </div>
-      {projects.map((project, index) => (
-        <ProjectsCard
-          key={index}
-          title={project.title}
-          link={project.link}
-          description={project.description}
-          imageUrl={project.coverImageUrl}
-          isEven={index % 2 === 0}
-        />
-      ))}
+      {projects.map(
+        (
+          project: {
+            coverImageUrl: string;
+            description: string;
+            link: string;
+            title: string;
+          },
+          index: number
+        ) => (
+          <ProjectsCard
+            key={index}
+            title={project.title}
+            link={project.link}
+            description={project.description}
+            imageUrl={project.coverImageUrl}
+            isEven={index % 2 === 0}
+          />
+        )
+      )}
     </>
   );
 };
