@@ -8,7 +8,7 @@ const Projects: any = () => {
   useEffect(() => {
     const fetchNotion = async () => {
       const response = await fetch("/api/notion/projects", {
-        next: { revalidate: 3600 },
+        next: { revalidate: 3000 },
       });
       const data = await response.json();
       setProjects(data);
