@@ -7,7 +7,7 @@ const notionDatabaseId = process.env.NOTION_PROJECTS_DATABASE_ID;
 
 const notion = new Client({ auth: notionSecret });
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   if (!notionSecret || !notionDatabaseId) {
     throw new Error("Notion secret or database id not provided");
   }
@@ -30,13 +30,17 @@ export async function GET() {
   };
   const filteredResponse: Project[] = response.results.map((page) => ({
     // @ts-ignore
-    title: (page as PageObjectResponse).properties.title?.title[0]?.text.content || "",
+    title:
+      (page as PageObjectResponse).properties.title?.title[0]?.text.content ||
+      "",
     // @ts-ignore
-    description: (page as PageObjectResponse).properties.description.rich_text[0].text.content,
+    description: (page as PageObjectResponse).properties.description
+      .rich_text[0].text.content,
     // @ts-ignore
     link: (page as PageObjectResponse).properties.link.url,
     // @ts-ignore
-    coverImageUrl: (page as PageObjectResponse).properties.cover_image.files[0]?.file.url,
+    coverImageUrl: (page as PageObjectResponse).properties.cover_image.files[0]
+      ?.file.url,
   }));
 
   // return NextResponse.json({ message: "success", data: response.results });
