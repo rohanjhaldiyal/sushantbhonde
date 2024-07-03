@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { FaComputer } from "react-icons/fa6";
 import ProjectsCard from "@/components/Projects/ProjectsCard";
 
+export const dynamic = "force-dynamic";
+
 const SideProjects = () => {
   const [projects, setProjects] = useState([]);
   useEffect(() => {
