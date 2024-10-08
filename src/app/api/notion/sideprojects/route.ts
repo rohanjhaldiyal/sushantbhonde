@@ -37,8 +37,7 @@ export async function GET(request: NextRequest) {
     // @ts-ignore
     link: (page as PageObjectResponse).properties.link.url,
     // @ts-ignore
-    coverImageUrl: (page as PageObjectResponse).properties.cover_image.files[0]
-      ?.file.url,
+    coverImageUrl: (page as PageObjectResponse).properties.cover_image.url,
   }));
 
   // return NextResponse.json({ message: "success", data: response.results });
